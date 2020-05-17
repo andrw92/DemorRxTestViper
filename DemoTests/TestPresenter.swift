@@ -81,9 +81,9 @@ class TestPresenter: XCTestCase {
         XCTAssertEqual(sut.router.didShowSuccessMessage, true)
     }
     
-    private func makeSUT() -> SUT {
+    private func makeSUT(shouldFail: Bool = false) -> SUT {
         let router = RouterSpy()
-        let interactor = MockInteractor()
+        let interactor = MockInteractor(shouldFail: shouldFail)
         let presenter = HelpArticlePresenter(articleId: 0, router: router, interactor: interactor)
         return (presenter, router)
     }
@@ -111,6 +111,12 @@ class RouterSpy: ArticleRouter {
 
 class MockInteractor: ArticleInteractor {
     
+    let shouldFail: Bool
+    
+    init(shouldFail: Bool) {
+        self.shouldFail = shouldFail
+    }
+    
     func getArticleInfo(articleId: Int) -> Single<HelpArticle> {
         return Single.create { single in
             let mockData = HelpArticle(id: articleId, title: "Test title", body: "Test Body")
@@ -120,7 +126,13 @@ class MockInteractor: ArticleInteractor {
     }
     
     func generateTicket(articleId: Int, clientMessage: String) -> Single<SupportTicket> {
-        return Single.create { single in
+        return Single.create { [weak self] single in
+            
+            guard let self = self, !self.shouldFail else {
+                single(.error(RxError.unknown))
+                return Disposables.create()
+            }
+            
             let mockData = SupportTicket(id: 0, date: Date() , clientMessage: clientMessage)
             single(.success(mockData))
             return Disposables.create()

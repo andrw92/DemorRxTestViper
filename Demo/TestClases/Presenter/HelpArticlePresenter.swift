@@ -37,6 +37,9 @@ class HelpArticlePresenter: ArticlePresenter {
     func submitSupportTicket(clientMessage: String) {
         interactor
             .generateTicket(articleId: articleId, clientMessage: clientMessage)
+            .do(onError: {[weak self] error in
+                self?.router.showError(with: error)
+            })
             .asObservable()
             .subscribe(onNext: {[weak self] ticket in
                 self?.router.showSuccessView()
@@ -49,6 +52,9 @@ class HelpArticlePresenter: ArticlePresenter {
     }
     
     func canSubmitMessage(with validMessage: Observable<String>) -> Observable<Bool> {
-        return validMessage.map { $0.count > 10 }.distinctUntilChanged()
+        return validMessage.map {
+            $0.count > 10
+            
+        }.distinctUntilChanged()
     }
 }

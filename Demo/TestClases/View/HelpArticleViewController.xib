@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HelpArticleViewController" customModule="DemoTest" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HelpArticleViewController" customModule="Demo" customModuleProvider="target">
             <connections>
                 <outlet property="bodyLabel" destination="SS6-4w-8j7" id="Rsr-rb-XaY"/>
                 <outlet property="inputTextView" destination="nPx-Ti-jkK" id="T9j-rT-7iv"/>
@@ -49,7 +49,7 @@
                 </textView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SS6-4w-8j7">
                     <rect key="frame" x="20" y="180" width="374" height="345"/>
-                    <mutableString key="text">Nam tristique, lacus eu finibus placerat, urna nibh lacinia purus, eget porttitor orci risus vitae nulla. Aliquam dapibus nibh vel nulla pharetra ullamcorper. Nunc blandit justo diam, et ornare purus imperdiet feugiat. Integer congue metus non est imperdiet convallis. Phasellus vitae laoreet nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam sodales rhoncus erat, id congue odio congue quis. Morbi id tortor vitae erat sollicitudin tristique. Donec facilisis placerat dolor in vehicula. In malesuada libero eu magna eleifend, et facilisis dolor accumsan. Phasellus suscipit ex non varius tristique. Proin varius risus elit, vitae accumsan ligula consequat non. Maecenas fringilla luctus tincidunt. Nunc congue orci tristique enim porttitor lacinia.</mutableString>
+                    <string key="text">Nam tristique, lacus eu finibus placerat, urna nibh lacinia purus, eget porttitor orci risus vitae nulla. Aliquam dapibus nibh vel nulla pharetra ullamcorper. Nunc blandit justo diam, et ornare purus imperdiet feugiat. Integer congue metus non est imperdiet convallis. Phasellus vitae laoreet nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam sodales rhoncus erat, id congue odio congue quis. Morbi id tortor vitae erat sollicitudin tristique. Donec facilisis placerat dolor in vehicula. In malesuada libero eu magna eleifend, et facilisis dolor accumsan. Phasellus suscipit ex non varius tristique. Proin varius risus elit, vitae accumsan ligula consequat non. Maecenas fringilla luctus tincidunt. Nunc congue orci tristique enim porttitor lacinia.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>

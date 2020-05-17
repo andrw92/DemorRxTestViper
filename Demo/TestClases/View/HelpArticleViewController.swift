@@ -12,10 +12,10 @@ import RxCocoa
 
 class HelpArticleViewController: UIViewController {
 
-    @IBOutlet var titleLabel: UILabel!
-    @IBOutlet var submitButton: UIButton!
-    @IBOutlet var bodyLabel: UILabel!
-    @IBOutlet var inputTextView: UITextView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var bodyLabel: UILabel!
+    @IBOutlet weak var inputTextView: UITextView!
     
     var presenter: ArticlePresenter!
     private let disposeBag = DisposeBag()
@@ -27,8 +27,8 @@ class HelpArticleViewController: UIViewController {
         presenter.getArticleInfo()
             .subscribe(onNext: updateInfo)
             .disposed(by: disposeBag)
-        
-        let text = inputTextView.rx.text.asObservable().compactMap { $0 }
+        let initialText = inputTextView.text ?? ""
+        let text = inputTextView.rx.didChange.compactMap { self.inputTextView.text }.asObservable().startWith(initialText)
         presenter
             .canSubmitMessage(with: text)
             .bind(to: submitButton.rx.isEnabled)

@@ -14,19 +14,13 @@ class TestView: XCTestCase {
     
     typealias SUT = (vc: HelpArticleViewController, presenter: HelpArticlePresenter, router: RouterSpy)
 
-    override func setUp() {
-        
-    }
-
-    override func tearDown() {
-        
-    }
-
     func test_VC_displayTitle() {
         
         let sut = makeSUT()
         _ = sut.vc.view
-        XCTAssertEqual(sut.vc.titleLabel.text, "Test title")
+        
+        let mirrorObject = ViewControllerSpy(instance: sut.vc)
+        XCTAssertEqual(mirrorObject.titleLabel?.text, "Test title")
     }
     
     func test_VC_submitButton_EnabledState() {
@@ -40,6 +34,18 @@ class TestView: XCTestCase {
         sut.vc.submitButton.sendActions(for: .touchUpInside)
         
         XCTAssertEqual(sut.router.didShowSuccessMessage, true)
+    }
+    
+    func test_VC_shouldShowSubmit() {
+        let sut = makeSUT(articleId: 0)
+        _ = sut.vc.view
+        XCTAssertEqual(sut.vc.submitButton.isHidden, false)
+    }
+    
+    func test_VC_shouldHideSubmit() {
+        let sut = makeSUT(articleId: 1)
+        _ = sut.vc.view
+        XCTAssertEqual(sut.vc.submitButton.isHidden, true)
     }
     
     func test_VC_submitButton_ShouldFail() {
@@ -57,13 +63,34 @@ class TestView: XCTestCase {
     }
 
     
-    private func makeSUT(shouldFail: Bool = false) -> SUT {
+    private func makeSUT(shouldFail: Bool = false, articleId: Int = 0) -> SUT {
         let router = RouterSpy()
         let interactor = MockInteractor(shouldFail: shouldFail)
-        let presenter = HelpArticlePresenter(articleId: 0, router: router, interactor: interactor)
+        let presenter = HelpArticlePresenter(articleId: articleId, router: router, interactor: interactor)
         let vc = HelpArticleViewController()
         vc.presenter = presenter
         return (vc, presenter, router)
     }
 
 }
+
+extension Mirror {
+    func getMirrorVariable<T>(name: StaticString = #function) -> T? {
+        return descendant("\(name)") as? T
+    }
+}
+
+class ViewControllerSpy {
+    
+    let mirror: Mirror
+    
+    init(instance: Any) {
+        mirror = Mirror(reflecting: instance)
+    }
+    
+    var titleLabel: UILabel? {
+        return mirror.getMirrorVariable()
+    }
+    
+}
+

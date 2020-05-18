@@ -48,7 +48,7 @@ class TestPresenter: XCTestCase {
             .disposed(by: disposeBag)
         
         scheduler.start()
-        let expectedData = HelpArticle(id: 0, title: "Test title", body: "Test Body")
+        let expectedData = HelpArticle(id: 0, title: "Test title", body: "Test body", type: "TypeOne")
         XCTAssertNotNil(receivedArticle)
         XCTAssertEqual(receivedArticle?.body, expectedData.body)
     }
@@ -118,8 +118,17 @@ class MockInteractor: ArticleInteractor {
     }
     
     func getArticleInfo(articleId: Int) -> Single<HelpArticle> {
-        return Single.create { single in
-            let mockData = HelpArticle(id: articleId, title: "Test title", body: "Test Body")
+        return Single.create { [weak self] single in
+            
+            guard let self = self, !self.shouldFail else {
+                single(.error(RxError.unknown))
+                return Disposables.create()
+            }
+            
+            let filePath = self.getJsonName(for: articleId)
+            let mockDataDict = getData(for: filePath)
+            let jsonData = try! JSONSerialization.data(withJSONObject: mockDataDict, options: .prettyPrinted)
+            let mockData = try! JSONDecoder().decode(HelpArticle.self, from: jsonData)
             single(.success(mockData))
             return Disposables.create()
         }
@@ -137,5 +146,9 @@ class MockInteractor: ArticleInteractor {
             single(.success(mockData))
             return Disposables.create()
         }
+    }
+    
+    private func getJsonName(for articleId: Int) -> String {
+        return "article-\(articleId)"
     }
 }

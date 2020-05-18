@@ -12,7 +12,7 @@ import RxCocoa
 
 class HelpArticleViewController: UIViewController {
 
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var bodyLabel: UILabel!
     @IBOutlet weak var inputTextView: UITextView!
@@ -23,6 +23,21 @@ class HelpArticleViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
+    }
+    
+    private func submitInfo(with message: String) {
+        presenter.submitSupportTicket(clientMessage: message)
+    }
+    
+    private func updateInfo(with article: HelpArticle) {
+        titleLabel.text = article.title
+        bodyLabel.text = article.body
+        submitButton.isHidden = !article.canGenerateTicket
+        inputTextView.isHidden = !article.canGenerateTicket
+    }
+    
+    private func bind() {
         
         presenter.getArticleInfo()
             .subscribe(onNext: updateInfo)
@@ -40,14 +55,4 @@ class HelpArticleViewController: UIViewController {
                 self.submitInfo(with: self.inputTextView.text)
             }).disposed(by: disposeBag)
     }
-    
-    private func submitInfo(with message: String) {
-        presenter.submitSupportTicket(clientMessage: message)
-    }
-    
-    private func updateInfo(with article: HelpArticle) {
-        titleLabel.text = article.title
-        bodyLabel.text = article.body
-    }
-
 }

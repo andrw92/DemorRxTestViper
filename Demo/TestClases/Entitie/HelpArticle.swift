@@ -13,5 +13,10 @@ struct HelpArticle: Codable {
     let id: Int
     let title: String
     let body: String
+    let type: String
+    
+    var canGenerateTicket: Bool {
+        return type == "TypeOne"
+    }
     
 }

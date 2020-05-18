@@ -89,7 +89,7 @@ class TestPresenter: XCTestCase {
     }
 }
 
-class RouterSpy: ArticleRouter {
+class RouterSpy: HelpArticleRouterProtocol {
     
     private(set) var didShowView = false
     private(set) var didShowSuccessMessage = false
@@ -109,7 +109,7 @@ class RouterSpy: ArticleRouter {
 }
 
 
-class MockInteractor: ArticleInteractor {
+class MockInteractor: ArticleInteractorProtocol {
     
     let shouldFail: Bool
     

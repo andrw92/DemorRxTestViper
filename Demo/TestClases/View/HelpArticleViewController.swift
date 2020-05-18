@@ -20,15 +20,24 @@ class HelpArticleViewController: UIViewController {
     var presenter: ArticlePresenter!
     private let disposeBag = DisposeBag()
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: String(describing: HelpArticleViewController.self), bundle: .main)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         presenter.getArticleInfo()
             .subscribe(onNext: updateInfo)
             .disposed(by: disposeBag)
+        
         let initialText = inputTextView.text ?? ""
+        
         let text = inputTextView.rx.didChange.compactMap { self.inputTextView.text }.asObservable().startWith(initialText)
+        
         presenter
             .canSubmitMessage(with: text)
             .bind(to: submitButton.rx.isEnabled)
@@ -48,6 +57,16 @@ class HelpArticleViewController: UIViewController {
     private func updateInfo(with article: HelpArticle) {
         titleLabel.text = article.title
         bodyLabel.text = article.body
+    }
+    
+    func showError() {
+        titleLabel.text = "Error"
+        bodyLabel.text = "Ocurrió un error, inténtelo de nuevo"
+    }
+    
+    func showSuccessView() {
+        titleLabel.text = "Success"
+        bodyLabel.text = "Lorem ipsum"
     }
 
 }

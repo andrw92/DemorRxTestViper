@@ -18,13 +18,13 @@ protocol ArticlePresenter {
 }
 
 class HelpArticlePresenter: ArticlePresenter {
-    
+        
     private let articleId: Int
-    private let router: ArticleRouter
-    private let interactor: ArticleInteractor
+    private let router: HelpArticleRouterProtocol
+    private let interactor: ArticleInteractorProtocol
     private var disposeBag = DisposeBag()
     
-    init(articleId: Int, router: ArticleRouter, interactor: ArticleInteractor) {
+    init(articleId: Int, router: HelpArticleRouterProtocol, interactor: ArticleInteractorProtocol) {
         self.articleId = articleId
         self.router = router
         self.interactor = interactor
